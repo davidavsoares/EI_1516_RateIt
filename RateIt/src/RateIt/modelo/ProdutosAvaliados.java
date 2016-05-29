@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classificacaoservicos.modelo.logica;
+package RateIt.modelo;
+
+import java.io.Serializable;
 
 /**
  *
  * @author David
  */
-public interface IEstado {
+public class ProdutosAvaliados implements Serializable {
 
-    public IEstado CarregarAplicacao();
+    static final long serialVersionUID = 42L;
 
-    public IEstado NovoJogo();
 }

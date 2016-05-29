@@ -1,7 +1,7 @@
-package classificacaoservicos;
+package RateIt;
 
-import classificacaoservicos.iu.InterfaceUtilizador;
-import classificacaoservicos.modelo.MaquinaDeEstados;
+import RateIt.iu.InterfaceUtilizador;
+import RateIt.modelo.MaquinaDeEstados;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
         InterfaceUtilizador ui = new InterfaceUtilizador(new MaquinaDeEstados());
-        ui.IniciaAplicacao();
+        ui.Corre();
     }
 
 }
