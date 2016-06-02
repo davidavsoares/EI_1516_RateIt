@@ -35,7 +35,13 @@ public class Cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Cliente{" + "Nome=" + Nome + ", NIF=" + NIF + '}';
+
+        return "\n" + Nome + "\t" + NIF + "\n";
     }
+//    
+//    public void Avalia(Produto p, int classificacao)
+//    {
+//        Infos.getAvaliacao().entrySet(p, this);//Fazer atribuicao
+//    }
 
 }

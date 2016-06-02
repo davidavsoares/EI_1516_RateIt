@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public abstract class Estado_Base implements IEstado, Serializable {
 
-
     public Dados Infos;
 
     public Estado_Base(Dados GameInfo) {
@@ -40,4 +39,10 @@ public abstract class Estado_Base implements IEstado, Serializable {
     public IEstado RemoverProduto() {
         return this;
     }
+
+    @Override
+    public IEstado VerificaPassword(String Password) {
+        return this;
+    }
+
 }

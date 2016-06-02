@@ -2,7 +2,6 @@ package RateIt.modelo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * I.S.E.C.
@@ -15,19 +14,24 @@ public final class Dados implements Serializable {
     public String Nome;
     private ArrayList<Cliente> ClientesRegistados;
     public ArrayList<Produto> Produtos;
-    private HashMap<Produto, ArrayList<Cliente>> Avaliacao;       // Cada produto tem um array de clientes coma  respectiva avaliacao
+    //   private HashMap<Produto, ArrayList<Cliente>> Avaliacao;       // Cada produto tem um array de clientes coma  respectiva avaliacao
     private String Password;
 
     public Dados(String Nome, String Password) {
         this.Nome = Nome;
         this.Password = Password;
-        Avaliacao = new HashMap<>();
+        //Avaliacao = new HashMap<>();
         ClientesRegistados = new ArrayList<>();
         Produtos = new ArrayList<>();
 
     }
-// ------------ CARACTERISTICAS DO ESTABELECIMENTO ------------------------- //
 
+    public Dados() {
+        ClientesRegistados = new ArrayList<>();
+        Produtos = new ArrayList<>();
+    }
+
+    // ------------ CARACTERISTICAS DO ESTABELECIMENTO ------------------------- //
     public void setNome(String Nome) {
         this.Nome = Nome;
     }
@@ -49,25 +53,65 @@ public final class Dados implements Serializable {
         return ClientesRegistados;
     }
 
-    public HashMap<Produto, ArrayList<Cliente>> getAvaliacao() {
-        return Avaliacao;
-    }
-
     public ArrayList<Produto> getProdutos() {
         return Produtos;
     }
 
     public String toStringProdutos() {
-        return "\n" + Produtos + '\n' + ClientesRegistados;
+        String s;
+        s = "\n\n" + "Produtos: ";
+        for (int i = 0; i < Produtos.size(); i++) {
+            s += "\n" + " - " + Produtos.get(i).toString();
+        }
+        return s;
+
     }
 
     public boolean ContemCliente(int NIF) {
+        return ClientesRegistados.stream().anyMatch((Cli) -> (Cli.equals(NIF)));
+    }
+
+    @SuppressWarnings("empty-statement")
+    public Cliente getCliente(int NIF) throws Exception {
         for (Cliente Cli : ClientesRegistados) {
             if (Cli.equals(NIF)) {
-                return true;
+                return Cli;
             }
         }
-        return false;
+        return null;
+    }
+
+    public String getAvaliacoesCliente(int NIF) {
+//        String Avaliacoes = "Produtos avaliados\n";
+//        for (Produto produto : Produtos) {
+//            if (produto.getAvaliacao().containsKey(NIF)) {
+//                Avaliacoes += produto.toString() + "\t";
+//                Avaliacoes += "A sua avaliacao:" + produto.getAvaliacao().get(NIF).toString();
+//            }
+//        }
+//        return Avaliacoes;
+
+        String s;
+        s = "\n";
+        for (int i = 0; i < Produtos.size(); i++) {
+            s += "\n" + (i + 1) + " - " + Produtos.get(i).toString() + "\tA sua avaliação: ";
+            if (Produtos.get(i).getAvaliacao().containsKey(NIF)) {
+                s += Produtos.get(i).getAvaliacao().get(NIF).toString();
+            } else {
+                s += "Ainda não efectuou nenhuma avaliacao";
+
+            }
+        }
+        return s;
+    }
+
+    public String getStrProdutos() {
+        String s;
+        s = "\n\n" + "Produtos: ";
+        for (int i = 0; i < Produtos.size(); i++) {
+            s += "\n" + (i + 1) + " - " + Produtos.get(i).toString();
+        }
+        return s;
     }
 
 }

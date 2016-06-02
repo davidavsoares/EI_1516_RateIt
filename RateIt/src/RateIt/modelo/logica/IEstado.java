@@ -1,6 +1,5 @@
 package RateIt.modelo.logica;
 
-
 /**
  * I.S.E.C.
  *
@@ -11,9 +10,13 @@ public interface IEstado {
     public IEstado CarregarAplicacao();
 
     public IEstado NovoJogo();
+
+    public IEstado VerificaPassword(String Password);
+
+    // Administrador //
     
     public IEstado AdicionarProduto(String texto);
-    
+
     public IEstado RemoverProduto();
 
 }

@@ -23,4 +23,12 @@ public class Administrador extends Estado_Base {
         getInfos().setNome(Estabelecimento);
     }
 
+    @Override
+    public IEstado VerificaPassword(String password) {
+        if (Infos.getPassword().equals(password)) {
+            return new MenuInicial(new Dados(null, null));
+        } else {
+            return new MenuInicial(Infos);
+        }
+    }
 }

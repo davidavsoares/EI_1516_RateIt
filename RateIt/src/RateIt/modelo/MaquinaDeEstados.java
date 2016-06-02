@@ -8,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * I.S.E.C.
@@ -25,11 +23,6 @@ public class MaquinaDeEstados implements Serializable {
 
     public MaquinaDeEstados() {
         estado = new MenuInicial(Infos);
-
-    }
-
-    public Dados getDados() {
-        return Infos;
     }
 
     public IEstado getEstado() {
@@ -60,8 +53,15 @@ public class MaquinaDeEstados implements Serializable {
         return Infos;
     }
 
-    public boolean VerificaPassword(String password) {
-        return password.equals(Infos.getPassword());
+    public void VerificaPassword(String password) {
+
+        setEstado(estado.VerificaPassword(password));
+//        if (password.equals(Infos.getPassword())) {
+//            setEstado(new Administrador(Infos));
+//        } else {
+//            setEstado(new MenuInicial(Infos));
+//        }
+
     }
 
     public static MaquinaDeEstados carregaDeFicheiroBinario() throws IOException, ClassNotFoundException {
@@ -99,6 +99,5 @@ public class MaquinaDeEstados implements Serializable {
             }
         }
     }
+
 }
-
-

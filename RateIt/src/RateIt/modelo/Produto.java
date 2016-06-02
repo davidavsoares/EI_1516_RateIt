@@ -1,6 +1,7 @@
 package RateIt.modelo;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  *
@@ -12,11 +13,14 @@ public class Produto implements Serializable {
     private String Nome;
     private int AvaliacaoMedia = 0;
     private final Dados Infos;
+    private HashMap<Integer, Integer> Avaliacao;
 
     public Produto(Dados Infos, String Nome) {
         this.Nome = Nome;
         this.Infos = Infos;
         Infos.getProdutos().add(this);
+        Avaliacao = new HashMap<>();
+        //Infos.getAvaliacao().put(this, Cliente);
     }
 
     public String getNome() {
@@ -27,12 +31,30 @@ public class Produto implements Serializable {
         this.Nome = Nome;
     }
 
-    public void setAvaliacaoMedia(int AvaliacaoMedia) {
-        this.AvaliacaoMedia = AvaliacaoMedia;
+    public int getAvaliacaoMedia() {
+        AvaliacaoMedia = 0;
+        if (Avaliacao.isEmpty()) {
+            return 0;
+        } else {
+            Avaliacao.keySet().stream().forEach((nif) -> {
+                AvaliacaoMedia += Avaliacao.get(nif);
+            });
+            return AvaliacaoMedia = AvaliacaoMedia / Avaliacao.size();
+        }
+
     }
 
     @Override
     public String toString() {
-        return Nome + ", " + AvaliacaoMedia;
+        return "[" + Nome + "]\tAvaliação Média: " + getAvaliacaoMedia();
     }
+
+    public HashMap<Integer, Integer> getAvaliacao() {
+        return Avaliacao;
+    }
+
+    public void Avalia(int NIF, int classificacao) {
+        Avaliacao.put(NIF, classificacao);
+    }
+
 }
