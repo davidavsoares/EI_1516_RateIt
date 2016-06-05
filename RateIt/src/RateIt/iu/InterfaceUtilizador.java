@@ -13,16 +13,16 @@ import java.util.logging.Logger;
  * @author DavidSoares [21220084] && NomeAluno [123456] & ...
  */
 public class InterfaceUtilizador {
-    
+
     private MaquinaDeEstados ME;
     private final Scanner sc;
     private int NIF_Actual;
-    
+
     public InterfaceUtilizador(MaquinaDeEstados ME) {
         this.ME = ME;
         sc = new Scanner(System.in);
     }
-    
+
     public void Corre() {
         CarregaEstabelecimento();
         while (!(ME.getEstado() instanceof Fim)) {
@@ -32,23 +32,21 @@ public class InterfaceUtilizador {
             } else if (ME.getEstado() instanceof Administrador) {
                 iuAdministrador();
             } else if (ME.getEstado() instanceof Utilizador_Login) {
-//                while (!(ME.getEstado() instanceof MenuInicial)) {
                 iuUtilizador_Login();
-//                }
             } else if (ME.getEstado() instanceof Utilizador) {
                 iuUtilizador();
             }
         }
         //MaquinaDeEstados.guardaEmFicheiroBinario(ME);
     }
-    
+
     private void iuMenuInicial() {
         int opcao;
         System.out.println("1 - Utilizador");
         System.out.println("2 - Administrador");
         System.out.println("0 - Sair");
         System.out.print("> ");
-        
+
         while (!sc.hasNextInt()) {
             sc.next();
         }
@@ -69,7 +67,7 @@ public class InterfaceUtilizador {
                 break;
         }
     }
-    
+
     private void iuAdministrador() {
         ClearScreen();
         int opcao, opcao2;
@@ -80,7 +78,7 @@ public class InterfaceUtilizador {
         System.out.println("9 - Reset");
         System.out.println("0 - Sair");
         System.out.print("> ");
-        
+
         while (!sc.hasNextInt()) {
             sc.next();
         }
@@ -103,7 +101,7 @@ public class InterfaceUtilizador {
                     System.out.println("Seleccione o produto:");
                     System.out.print(">");
                     opcao2 = sc.nextInt();
-                    
+
                     if (opcao2 > 0 && opcao2 <= ME.getInfos().getProdutos().size()) {
                         System.out.print("Introduza o nome pretendido para o produto: ");
                         ME.getInfos().getProdutos().get(opcao2 - 1).setNome(sc.next());
@@ -125,14 +123,14 @@ public class InterfaceUtilizador {
         }
         ClearScreen();
     }
-    
+
     private void iuUtilizador_Login() {
         int NIF;
         ClearScreen();
         System.out.println("0 - Sair");
         System.out.println("NIF - Login");       // deve obter um login, pode ser texto ou numeros
         System.out.print("> ");
-        
+
         while (!sc.hasNextInt()) {
             sc.next();
         }
@@ -151,7 +149,7 @@ public class InterfaceUtilizador {
                         if (NIF == 0) {
                             break;
                         }
-                        
+
                     }
                     if (NIF != 0) {
                         ClearScreen();
@@ -160,52 +158,64 @@ public class InterfaceUtilizador {
                         System.out.print("\nIntroduza o apelido:");
                         new Cliente(ME.getInfos(), Nome + " " + sc.next(), NIF);
                     }
+                    break;
             }
-            NIF_Actual = NIF;
-            ME.setEstado(new Utilizador(ME.getInfos(), NIF));
-            
+            if (NIF != 0) {
+                NIF_Actual = NIF;
+                ME.setEstado(new Utilizador(ME.getInfos(), NIF));
+            }
+
         } else {
             NIF_Actual = NIF;
             ME.setEstado(new Utilizador(ME.getInfos(), NIF));
         }
     }
-    
+
     private void iuUtilizador() {
         if (!ME.getInfos().getProdutos().isEmpty()) {
-            int opcao;
+            int opcao, avaliacao;
             System.out.println("Escolha o produto que pretende avaliar:");
             System.out.println(ME.getInfos().getAvaliacoesCliente(NIF_Actual));// Vai a cada produto e imprime as avaliacoes daquele cliente.
             System.out.println("\n0 - Sair");
             System.out.print(">");
-            
+
             opcao = sc.nextInt();
+
             System.out.print("Introduza a avaliação pretendida:");
             switch (opcao) {
                 case 0:
-                    ME.setEstado(new MenuInicial(ME.getInfos()));
+                    //ME.setEstado(new MenuInicial(ME.getInfos()));
+                    ME.setEstado(new Utilizador_Login(ME.getInfos()));
                     break;
                 default:
                     if (opcao > 0 && opcao <= ME.getInfos().getProdutos().size()) {
-                        ME.getInfos().getProdutos().get(opcao - 1).getAvaliacao().put(NIF_Actual, sc.nextInt());
+                        avaliacao = sc.nextInt();
+                        while (avaliacao > 5 || avaliacao <= 0) {
+                            System.out.print("A avaliacao deve ser entre 1 e 5 \n\nIntroduza a avaliação pretendida:");
+                            avaliacao = sc.nextInt();
+                        }
+                        ME.getInfos().getProdutos().get(opcao - 1).getAvaliacao().put(NIF_Actual, avaliacao);
+
                     }
                     break;
             }
+
         } else {
             ME.setEstado(new MenuInicial(ME.getInfos()));
         }
     }
-    
+
     private void CarregaEstabelecimento() {
         try {
             ME = MaquinaDeEstados.carregaDeFicheiroBinario();
             ME.setEstado(new MenuInicial(ME.getInfos()));
         } catch (IOException | ClassNotFoundException e) {
             try {
-                
+
                 System.out.println("Não foram encontrados dados na aplicação"
                         + "\n\nSerá carregada uma nova");
                 Thread.sleep(2000);
-                
+
             } catch (InterruptedException ex) {
                 Logger.getLogger(InterfaceUtilizador.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -213,7 +223,7 @@ public class InterfaceUtilizador {
             iuNovo_Estabelecimento();
         }
     }
-    
+
     private void iuNovo_Estabelecimento() {
         for (int i = 0; i < 100; ++i) {
             System.out.println();
@@ -232,7 +242,7 @@ public class InterfaceUtilizador {
         } while (!aux2.equals(sc.next()));
         ME.setEstado(ME.NovoEstabelecimento(aux, aux2));
     }
-    
+
     private void ClearScreen() {
         MaquinaDeEstados.guardaEmFicheiroBinario(ME);
         for (int i = 0; i < 100; ++i) {
@@ -247,5 +257,5 @@ public class InterfaceUtilizador {
         System.out.println(ME.getInfos().toStringProdutos() + "\n");
         System.out.println("\n\n\n");
     }
-    
+
 }

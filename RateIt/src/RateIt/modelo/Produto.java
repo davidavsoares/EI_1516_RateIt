@@ -1,6 +1,7 @@
 package RateIt.modelo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 
 /**
@@ -11,7 +12,7 @@ public class Produto implements Serializable {
 
     static final long serialVersionUID = 42L;
     private String Nome;
-    private int AvaliacaoMedia = 0;
+    private float AvaliacaoMedia = 0;
     private final Dados Infos;
     private HashMap<Integer, Integer> Avaliacao;
 
@@ -31,7 +32,7 @@ public class Produto implements Serializable {
         this.Nome = Nome;
     }
 
-    public int getAvaliacaoMedia() {
+    public float getAvaliacaoMedia() {
         AvaliacaoMedia = 0;
         if (Avaliacao.isEmpty()) {
             return 0;
@@ -46,7 +47,8 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + Nome + "]\tAvaliação Média: " + getAvaliacaoMedia();
+        DecimalFormat decimal = new DecimalFormat("0.0");
+        return "[" + Nome + "]\tAvaliação Média: " + decimal.format(getAvaliacaoMedia());
     }
 
     public HashMap<Integer, Integer> getAvaliacao() {
