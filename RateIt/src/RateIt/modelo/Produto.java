@@ -48,7 +48,7 @@ public class Produto implements Serializable {
     @Override
     public String toString() {
         DecimalFormat decimal = new DecimalFormat("0.0");
-        return "[" + Nome + "]\tAvaliação Média: " + decimal.format(getAvaliacaoMedia());
+        return "[" + Nome + "]\tAvaliação Média: " + decimal.format(getAvaliacaoMedia()) + "\t (" + Avaliacao.size() + ")";
     }
 
     public HashMap<Integer, Integer> getAvaliacao() {

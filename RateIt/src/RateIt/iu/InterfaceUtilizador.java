@@ -174,20 +174,39 @@ public class InterfaceUtilizador {
     private void iuUtilizador() {
         if (!ME.getInfos().getProdutos().isEmpty()) {
             int opcao, avaliacao;
+            if (!ME.getInfos().getAvaliacao().containsKey(NIF_Actual)) {
+                System.out.print("Introduza avaliação de " + ME.getInfos().getNome() + ":");
+                avaliacao = sc.nextInt();
+                while (avaliacao > 5 || avaliacao <= 0) {
+                    System.out.print("A avaliacao deve ser entre 1 e 5 \n\nIntroduza a avaliação pretendida:");
+                    avaliacao = sc.nextInt();
+                }
+                ME.getInfos().getAvaliacao().put(NIF_Actual, avaliacao);
+            }
             System.out.println("Escolha o produto que pretende avaliar:");
             System.out.println(ME.getInfos().getAvaliacoesCliente(NIF_Actual));// Vai a cada produto e imprime as avaliacoes daquele cliente.
-            System.out.println("\n0 - Sair");
+            System.out.println("\n 0 - Avaliar " + ME.getInfos().Nome);
+            System.out.println("-1 - Sair");
             System.out.print(">");
 
             opcao = sc.nextInt();
 
-            System.out.print("Introduza a avaliação pretendida:");
             switch (opcao) {
-                case 0:
-                    //ME.setEstado(new MenuInicial(ME.getInfos()));
+                case -1:
                     ME.setEstado(new Utilizador_Login(ME.getInfos()));
                     break;
+                case 0:
+                    System.out.print("Introduza avaliação de " + ME.getInfos().getNome() + ":");
+                    avaliacao = sc.nextInt();
+                    while (avaliacao > 5 || avaliacao <= 0) {
+                        System.out.print("A avaliacao deve ser entre 1 e 5 \n\nIntroduza a avaliação pretendida:");
+                        avaliacao = sc.nextInt();
+
+                    }
+                    ME.getInfos().getAvaliacao().put(NIF_Actual, avaliacao);
+                    break;
                 default:
+                    System.out.print("Introduza a avaliação pretendida:");
                     if (opcao > 0 && opcao <= ME.getInfos().getProdutos().size()) {
                         avaliacao = sc.nextInt();
                         while (avaliacao > 5 || avaliacao <= 0) {
@@ -250,12 +269,12 @@ public class InterfaceUtilizador {
         }
         System.out.println("             Rate  It             ");
         if (!ME.getInfos().getNome().isEmpty()) {
-            System.out.println("             [" + ME.getInfos().getNome() + "]");
+            System.out.println("\t\t[" + ME.getInfos().getNome() + "]");
+            System.out.println("\t\t " + ME.getInfos().getAvaliacaoSitio());
         }
-        System.out.println("----------------------------------");
+        System.out.println("----------------------------------------------");
         System.out.println();
         System.out.println(ME.getInfos().toStringProdutos() + "\n");
         System.out.println("\n\n\n");
     }
-
 }

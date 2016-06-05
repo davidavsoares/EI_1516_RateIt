@@ -1,7 +1,10 @@
 package RateIt.modelo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.function.Consumer;
 
 /**
  * I.S.E.C.
@@ -14,8 +17,8 @@ public final class Dados implements Serializable {
     public String Nome;
     private ArrayList<Cliente> ClientesRegistados;
     public ArrayList<Produto> Produtos;
-    //   private HashMap<Produto, ArrayList<Cliente>> Avaliacao;       // Cada produto tem um array de clientes coma  respectiva avaliacao
     private String Password;
+    private HashMap<Integer, Integer> Avaliacao;
 
     public Dados(String Nome, String Password) {
         this.Nome = Nome;
@@ -23,6 +26,7 @@ public final class Dados implements Serializable {
         //Avaliacao = new HashMap<>();
         ClientesRegistados = new ArrayList<>();
         Produtos = new ArrayList<>();
+        Avaliacao = new HashMap<>();
 
     }
 
@@ -82,19 +86,10 @@ public final class Dados implements Serializable {
     }
 
     public String getAvaliacoesCliente(int NIF) {
-//        String Avaliacoes = "Produtos avaliados\n";
-//        for (Produto produto : Produtos) {
-//            if (produto.getAvaliacao().containsKey(NIF)) {
-//                Avaliacoes += produto.toString() + "\t";
-//                Avaliacoes += "A sua avaliacao:" + produto.getAvaliacao().get(NIF).toString();
-//            }
-//        }
-//        return Avaliacoes;
-
         String s;
-        s = "\n";
+        s= "";
         for (int i = 0; i < Produtos.size(); i++) {
-            s += "\n" + (i + 1) + " - " + Produtos.get(i).toString() + "\tA sua avaliação: ";
+            s +="\n" + (i + 1) + " - " + Produtos.get(i).toString() + "\tA sua avaliação: ";
             if (Produtos.get(i).getAvaliacao().containsKey(NIF)) {
                 s += Produtos.get(i).getAvaliacao().get(NIF).toString();
             } else {
@@ -112,6 +107,28 @@ public final class Dados implements Serializable {
             s += "\n" + (i + 1) + " - " + Produtos.get(i).toString();
         }
         return s;
+    }
+
+    public HashMap<Integer, Integer> getAvaliacao() {
+        return Avaliacao;
+    }
+
+    public String getAvaliacaoSitio() {
+        DecimalFormat decimal = new DecimalFormat("0.0");
+        int AvaliacaoMedia = 0;
+        if (Avaliacao.isEmpty()) {
+            return Nome + " ainda não foi classificado";
+        } else {
+            for (Integer Aval : Avaliacao.keySet()) {
+                AvaliacaoMedia += Avaliacao.get(Aval);
+                
+            }
+//            Avaliacao.keySet().stream().forEach((nif) -> {
+//                AvaliacaoMedia += Avaliacao.get(nif);
+//            });
+            return decimal.format(AvaliacaoMedia = AvaliacaoMedia / Avaliacao.size()) + "   (" + Avaliacao.size() + ")";
+        }
+
     }
 
 }
